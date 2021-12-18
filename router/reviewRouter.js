@@ -20,7 +20,7 @@ async function createReview(req, res) {
         })
 
     } catch (err) {
-        consol.log(err);
+        console.log(err);
         res.status(500).json({
             message: err.message,
         })

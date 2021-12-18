@@ -9,29 +9,36 @@ mongoose.connect(db_link).then(function () {
 })
 
 const userSchema = new mongoose.Schema({
-    name: String,
+    userImage: String,
+
+    name: {
+        type: String,
+        min: 4,
+    },
     email: {
         type: String,
-        required: true,
         validate: function () {
             return validator.validate(this.email);
         }
     },
     password: {
         type: String,
-        required: true,
         min: 8
     },
     confirmPassword: {
         type: String,
-        required: true,
         min: 8,
         validate: function () {
             return this.confirmPassword == this.password;
         }
     },
-    token:String,
-    
+    token: String,
+
+    cart: {
+        type: [mongoose.Schema.ObjectId],
+        ref: "foodModel",
+    }
+
 })
 
 const userModel = mongoose.model("userModel", userSchema);

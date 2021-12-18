@@ -22,9 +22,9 @@ const reviewSchema = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "foodModel",
     },
-    user:{
-        type:mongoose.Schema.ObjectId,
-        ref:"userModel",
+    user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "userModel",
     }
 
 })

@@ -10,7 +10,7 @@ const reviewRouter = require("./router/reviewRouter");
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/user",userRouter);
+app.use("/api/user", userRouter);
 app.use("/api/food", foodRouter);
 app.use("/api/review", reviewRouter);
 

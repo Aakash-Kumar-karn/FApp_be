@@ -85,6 +85,28 @@ async function getUser(req, res) {
     }
 }
 
+async function addIntoCart(req, res) {
+    try {
+        let userId = req.body.user;
+        let foodId = req.body.food;
+
+        let user = await userModel.findById(userId);
+        user.cart.push(foodId);
+
+        await user.save();
+
+        res.status(200).json({
+            user: user,
+        })
+
+    } catch (err) {
+        console.log(err);
+        res.status(404).json({
+            message: err.message,
+        })
+    }
+}
+
 userRouter
     .route("/signup")
     .post(signUpUser)
@@ -96,5 +118,9 @@ userRouter
 userRouter
     .route("/:id")
     .get(protectRoute, getUser)
+
+userRouter
+    .route("/cart")
+    .patch(addIntoCart)
 
 module.exports = userRouter;
