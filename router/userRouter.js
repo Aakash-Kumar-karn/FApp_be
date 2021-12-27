@@ -1,5 +1,6 @@
 const express = require("express");
 const userModel = require("../model/userModel");
+const foodModel = require("../model/foodModel");
 const userRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../secret");
@@ -91,9 +92,50 @@ async function addIntoCart(req, res) {
         let foodId = req.body.food;
 
         let user = await userModel.findById(userId);
-        user.cart.push(foodId);
+        let foodItem = await foodModel.findById(foodId);
+
+        let cartItems = user.cart;
+
+        if (cartItems.includes(foodId) == false) {
+            user.cart.push(foodId);
+            foodItem.qty++;
+        } else if (cartItems.includes(foodId) == true) {
+            foodItem.qty++;
+        }
 
         await user.save();
+        await foodItem.save();
+
+        res.status(200).json({
+            user: user,
+        })
+
+    } catch (err) {
+        console.log(err);
+        res.status(404).json({
+            message: err.message,
+        })
+    }
+}
+
+
+async function removeFromCart(req, res) {
+    try {
+        let userId = req.body.user;
+        let foodId = req.body.food;
+
+        let user = await userModel.findById(userId);
+        let foodItem = await foodModel.findById(foodId);
+
+        if (foodItem.qty > 1) {
+            foodItem.qty--;
+        } else if (foodItem.qty == 1) {
+            user.cart.remove(foodId);
+            foodItem.qty--;
+        }
+
+        await user.save();
+        await foodItem.save();
 
         res.status(200).json({
             user: user,
@@ -122,5 +164,9 @@ userRouter
 userRouter
     .route("/cart")
     .patch(addIntoCart)
+
+userRouter
+    .route("/cart/delete")
+    .patch(removeFromCart);
 
 module.exports = userRouter;

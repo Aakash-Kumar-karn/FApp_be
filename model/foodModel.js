@@ -20,9 +20,9 @@ const foodSchema = new mongoose.Schema({
     reviews: {
         type: [mongoose.Schema.ObjectId],
         ref: "reviewModel",
-    }
+    },
 
-    
+    qty: String,
 })
 
 const foodModel = mongoose.model("food", foodSchema);
