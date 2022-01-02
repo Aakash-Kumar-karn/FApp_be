@@ -163,10 +163,10 @@ userRouter
 
 userRouter
     .route("/cart")
-    .patch(addIntoCart)
+    .post(addIntoCart)
 
 userRouter
     .route("/cart/delete")
-    .patch(removeFromCart);
+    .post(removeFromCart);
 
 module.exports = userRouter;
