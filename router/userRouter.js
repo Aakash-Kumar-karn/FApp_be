@@ -149,6 +149,39 @@ async function removeFromCart(req, res) {
     }
 }
 
+ const updateUserCart = async(req, res) => {
+    try {
+        // let userId = req.body.user;
+        let { id } = req.params;
+        console.log(id);
+        // let foodId = req.body.food;
+
+        let user = await userModel.findById(id);
+        // let foodItem = await foodModel.findById(foodId);
+
+        // if (foodItem.qty > 1) {
+        //     foodItem.qty--;
+        // } else if (foodItem.qty == 1) {
+        //     user.cart.remove(foodId);
+        //     foodItem.qty--;
+        // }
+        console.log(user);
+        user.cart = [];
+        await user.save();
+        // await foodItem.save();
+
+        res.status(200).json({
+            user: user,
+        })
+
+    } catch (err) {
+        console.log(err);
+        res.status(404).json({
+            message: err.message,
+        })
+    }
+}
+
 userRouter
     .route("/signup")
     .post(signUpUser)
@@ -164,9 +197,14 @@ userRouter
 userRouter
     .route("/cart")
     .post(addIntoCart)
+    
+userRouter
+    .route("/cart/:id")    
+    .put(updateUserCart)
 
 userRouter
     .route("/cart/delete")
     .post(removeFromCart);
 
 module.exports = userRouter;
+// module.exports = updateUserCart;
