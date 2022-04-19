@@ -22,7 +22,6 @@ const foodSchema = new mongoose.Schema({
         ref: "reviewModel",
     },
 
-    qty: String,
 })
 
 const foodModel = mongoose.model("food", foodSchema);

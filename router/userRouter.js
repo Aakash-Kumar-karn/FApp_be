@@ -94,17 +94,8 @@ async function addIntoCart(req, res) {
         let user = await userModel.findById(userId);
         let foodItem = await foodModel.findById(foodId);
 
-        let cartItems = user.cart;
-
-        if (cartItems.includes(foodId) == false) {
-            user.cart.push(foodId);
-            foodItem.qty++;
-        } else if (cartItems.includes(foodId) == true) {
-            foodItem.qty++;
-        }
-
+        user.cart.push(foodItem);
         await user.save();
-        await foodItem.save();
 
         res.status(200).json({
             user: user,
@@ -133,9 +124,17 @@ async function removeFromCart(req, res) {
             user.cart.remove(foodId);
             foodItem.qty--;
         }
+        let flag = false;
+        for(let i = 0;i<user.cart.length;i++){
+            if(JSON.stringify(user.cart[i]) == JSON.stringify(foodItem._id)){
+                flag = true;
+                user.cart.splice(i,1);
+            }
+            if(flag)
+                break;
+        }
 
         await user.save();
-        await foodItem.save();
 
         res.status(200).json({
             user: user,
@@ -151,24 +150,12 @@ async function removeFromCart(req, res) {
 
  const updateUserCart = async(req, res) => {
     try {
-        // let userId = req.body.user;
         let { id } = req.params;
         console.log(id);
-        // let foodId = req.body.food;
 
         let user = await userModel.findById(id);
-        // let foodItem = await foodModel.findById(foodId);
-
-        // if (foodItem.qty > 1) {
-        //     foodItem.qty--;
-        // } else if (foodItem.qty == 1) {
-        //     user.cart.remove(foodId);
-        //     foodItem.qty--;
-        // }
-        console.log(user);
         user.cart = [];
         await user.save();
-        // await foodItem.save();
 
         res.status(200).json({
             user: user,
@@ -207,4 +194,3 @@ userRouter
     .post(removeFromCart);
 
 module.exports = userRouter;
-// module.exports = updateUserCart;
