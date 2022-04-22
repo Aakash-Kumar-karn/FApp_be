@@ -118,19 +118,19 @@ async function removeFromCart(req, res) {
         let user = await userModel.findById(userId);
         let foodItem = await foodModel.findById(foodId);
 
-        if (foodItem.qty > 1) {
-            foodItem.qty--;
-        } else if (foodItem.qty == 1) {
-            user.cart.remove(foodId);
-            foodItem.qty--;
-        }
+        // if (foodItem.qty > 1) {
+        //     foodItem.qty--;
+        // } else if (foodItem.qty == 1) {
+        //     user.cart.remove(foodId);
+        //     foodItem.qty--;
+        // }
         let flag = false;
-        for(let i = 0;i<user.cart.length;i++){
-            if(JSON.stringify(user.cart[i]) == JSON.stringify(foodItem._id)){
+        for (let i = 0; i < user.cart.length; i++) {
+            if (JSON.stringify(user.cart[i]) == JSON.stringify(foodItem._id)) {
                 flag = true;
-                user.cart.splice(i,1);
+                user.cart.splice(i, 1);
             }
-            if(flag)
+            if (flag)
                 break;
         }
 
@@ -148,7 +148,7 @@ async function removeFromCart(req, res) {
     }
 }
 
- const updateUserCart = async(req, res) => {
+const updateUserCart = async (req, res) => {
     try {
         let { id } = req.params;
         console.log(id);
@@ -184,9 +184,9 @@ userRouter
 userRouter
     .route("/cart")
     .post(addIntoCart)
-    
+
 userRouter
-    .route("/cart/:id")    
+    .route("/cart/:id")
     .put(updateUserCart)
 
 userRouter
