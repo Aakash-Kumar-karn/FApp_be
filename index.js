@@ -9,6 +9,7 @@ const shortid = require('shortid')
 const userRouter = require("./router/userRouter");
 const foodRouter = require("./router/foodRouter");
 const reviewRouter = require("./router/reviewRouter");
+const orderRouter = require("./router/orderRouter");
 // const updateUserCart = require("./router/userRouter");
 
 app.use(express.json());
@@ -22,10 +23,10 @@ const razorpay = new Razorpay({
 })
 
 app.post('/razorpay', async (req, res) => {
-	let {name ,email,userId, cartAmount} = req.body;
-    console.log("====================",name,email)
-    
-    const payment_capture = 1
+	let { name, email, userId, cartAmount } = req.body;
+	console.log("====================", name, email)
+
+	const payment_capture = 1
 	const amount = cartAmount
 	const currency = 'INR'
 
@@ -44,7 +45,7 @@ app.post('/razorpay', async (req, res) => {
 			currency: response.currency,
 			amount: response.amount
 		})
-        // await userRouter.updateUserCart(req,res);
+		// await userRouter.updateUserCart(req,res);
 	} catch (error) {
 		console.log(error)
 	}
@@ -54,8 +55,9 @@ app.post('/razorpay', async (req, res) => {
 app.use("/api/user", userRouter);
 app.use("/api/food", foodRouter);
 app.use("/api/review", reviewRouter);
+app.use("/api/order", orderRouter);
 
 
 app.listen(PORT, () => {
-    console.log(`server is successfully started at port ${PORT}`)
+	console.log(`server is successfully started at port ${PORT}`)
 })
