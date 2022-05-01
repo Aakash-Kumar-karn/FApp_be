@@ -21,9 +21,9 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
 
-    username:{
-        type:String,
-        required:true
+    username: {
+        type: String,
+        required: true
     }
 
 })

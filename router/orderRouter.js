@@ -4,8 +4,8 @@ const orderRouter = express.Router();
 const orderArr = ["Placed",
     "Confirmed",
     "Prepared",
-    "Delivery",
-    "Complete",]
+    "Out for Delivery",
+    "Completed",]
 
 async function saveOrder(req, res) {
     try {
@@ -68,11 +68,11 @@ async function updateOrder(req, res) {
     try {
         let { id } = req.params;
         let order = await orderModel.find({ orderId: id });
-        console.log("before update", order);
+
         for (let key in req.body) {
             order[0][key] = req.body[key];
         }
-        console.log("after update", order[0])
+
         await order[0].save();
         res.status(200).json({
             data: order[0],
