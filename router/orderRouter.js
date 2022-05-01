@@ -48,9 +48,7 @@ async function getParticularOrder(req, res) {
         let { id } = req.params;
         console.log("order id", id);
         let order = await orderModel.find({ orderId: id });
-        // console.log(order.status);
         let idx = orderArr.indexOf(order[0].status);
-        console.log(idx);
         res.status(200).json({
             data: {
                 status: idx,

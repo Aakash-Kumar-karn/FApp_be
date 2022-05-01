@@ -14,12 +14,16 @@ const orderSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now(),
     },
 
     orderId: {
         type: String,
         required: true
+    },
+
+    username:{
+        type:String,
+        required:true
     }
 
 })
