@@ -26,6 +26,8 @@ async function protectRoute(req, res, next) {
 
 async function signUpUser(req, res) {
     try {
+        // console.log("hello")
+        console.log(req.body);
         let newUser = await userModel.create(req.body);
         res.status(200).json({
             message: "user created successfully",

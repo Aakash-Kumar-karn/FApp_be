@@ -13,7 +13,6 @@ async function saveOrder(req, res) {
         let order = await orderModel.create(data);
 
         await order.save();
-        console.log("saved orderData", order);
 
         res.status(200).json({
             message: "order created",
@@ -46,16 +45,27 @@ async function getAllOrders(req, res) {
 async function getParticularOrder(req, res) {
     try {
         let { id } = req.params;
-        console.log("order id", id);
+        console.log("hello id", id)
         let order = await orderModel.find({ orderId: id });
-        let idx = orderArr.indexOf(order[0].status);
-        res.status(200).json({
-            data: {
-                status: idx,
-                createdAt: order[0].createdAt,
-                orderId: order[0].orderId
-            }
-        })
+        console.log("find vala order", order);
+        if (order.length > 0) {
+            let idx = orderArr.indexOf(order[0].status);
+            res.status(200).json({
+                data: {
+                    status: idx,
+                    createdAt: order[0].createdAt,
+                    orderId: order[0].orderId
+                }
+            })
+        } else {
+            res.status(200).json({
+                data: {
+                    status: 4,
+                    orderId: id,
+                    createdAt: Date.now()
+                }
+            })
+        }
 
     } catch (err) {
         res.status(404).json({
@@ -85,28 +95,23 @@ async function updateOrder(req, res) {
     }
 }
 
-// async function deleteReview(req, res) {
-//     try {
-//         let review = await reviewModel.findByIdAndDelete(req.body.id);
-//         let foodId = review.food;
-//         let food = await foodModel.findById(foodId);
+async function deleteOrder(req, res) {
+    try {
+        let { id } = req.params;
+        let order = await orderModel.findOneAndDelete({ orderId: id });
+        await order.save();
 
-//         let indexOfReview = food.reviews.indexOf(review["_id"])
-//         food.reviews.splice(indexOfReview, 1);
+        res.status(200).json({
+            message: "order successfully deleted",
+            order: order,
+        })
 
-//         await food.save();
-
-//         res.status(200).json({
-//             message: "review successfully deleted",
-//             review: review,
-//         })
-
-//     } catch (err) {
-//         res.status(404).json({
-//             message: err.message,
-//         })
-//     }
-// }
+    } catch (err) {
+        res.status(404).json({
+            message: err.message,
+        })
+    }
+}
 
 orderRouter
     .route("/")
@@ -117,6 +122,6 @@ orderRouter
     .route("/:id")
     .get(getParticularOrder)
     .patch(updateOrder)
-// .delete(deleteReview)
+    .delete(deleteOrder)
 
 module.exports = orderRouter;
