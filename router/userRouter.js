@@ -181,7 +181,8 @@ userRouter
 
 userRouter
     .route("/:id")
-    .get(protectRoute, getUser)
+    // .get(protectRoute, getUser)
+    .get(getUser)
 
 userRouter
     .route("/cart")
