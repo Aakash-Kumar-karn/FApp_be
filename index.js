@@ -19,7 +19,15 @@ app.use(cookieParser());
 // app.use(express.urlencoded({ limit: '35mb' }));
 // app.use(bodyParser.json({ limit: "50mb" }));
 // app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
-app.use(cors());
+// app.use(cors());
+app.use(
+	cors({
+		origin: ["https://alan-eats.netlify.app/"],
+		methods: ["GET", "POST", "DELETE", "PATCH", "PUT"],
+		credentials: true,
+		origin: true,
+	})
+);
 
 const razorpay = new Razorpay({
 	key_id: 'rzp_test_oKt4aYMDlmmRMX',
