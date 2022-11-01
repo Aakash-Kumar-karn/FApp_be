@@ -6,7 +6,7 @@ mongoose.connect(db_link).then(function () {
 }).catch(function (err) {
     console.log(err);
 })
-//trynew
+//trynew ok
 const foodSchema = new mongoose.Schema({
     label: String,
     image_url: String,
